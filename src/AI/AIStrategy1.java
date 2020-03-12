@@ -2,6 +2,8 @@ package AI;
 
 import java.util.ArrayList;
 
+import com.sun.java_cup.internal.runtime.virtual_parse_stack;
+
 import Model.Board;
 
 public class AIStrategy1 {
@@ -14,6 +16,11 @@ public class AIStrategy1 {
 		this.board = board;
 		this.depth = 3;
 	}
+	public AIStrategy1(boolean player, Board board,int depth) {
+		this.player = player;
+		this.board = board;
+		this.depth = depth;
+	}
 
 	public int makeMove(boolean player) {
 		searchedNodeNumber = 0;
@@ -24,7 +31,7 @@ public class AIStrategy1 {
 		int position = -1;
 		for (int i = 0; i < movesArrayList.size(); i++) {
 			ArrayList<Integer> arr= new ArrayList<Integer>(moveArr(board.getBoard(),player,movesArrayList.get(i)));
-			int tem = minValue(arr,!player,this.depth);
+			int tem = minValueAB(arr,!player,this.depth,Integer.MIN_VALUE,Integer.MAX_VALUE);
 			if(sum<tem) {
 				sum = tem;
 				position = movesArrayList.get(i);
@@ -75,7 +82,7 @@ public class AIStrategy1 {
 			for (int j = 0; j < movesArrayList.size(); j++) {
 				ArrayList<Integer> arr1= new ArrayList<Integer>(moveArr(arr,player,movesArrayList.get(j)));
 				int tem = minValue(arr1,!player,i-1);
-				if(sum<tem) {
+				if(sum>tem) {
 					sum = tem;
 				}
 				searchedNodeNumber++;
@@ -83,7 +90,51 @@ public class AIStrategy1 {
 			return sum;
 		}
 	}
-
+	private int minValueAB(ArrayList<Integer> arr, boolean player, int i,int A,int B) {
+		
+		if(i==0) {
+			searchedNodeNumber++;
+			return huristics(arr,this.player);
+		}else {
+			ArrayList<Integer> movesArrayList = new ArrayList<Integer>(getMoves(player, arr));
+			int sum = Integer.MIN_VALUE;
+			for (int j = 0; j < movesArrayList.size(); j++) {
+				ArrayList<Integer> arr1= new ArrayList<Integer>(moveArr(arr,player,movesArrayList.get(j)));
+				int tem = maxValueAB(arr1,!player,i-1,A,B);
+				if(sum<tem) {
+					sum = tem;
+				}
+				if(sum<B)
+					return sum;
+				B=Math.min(B, sum);
+				searchedNodeNumber++;
+			}
+			return sum;
+		}
+	}
+	private int maxValueAB(ArrayList<Integer> arr, boolean player, int i, int A, int B) {
+		
+		if(i==0) {
+			searchedNodeNumber++;
+			return huristics(arr,this.player);
+		}else {
+			ArrayList<Integer> movesArrayList = new ArrayList<Integer>(getMoves(player, arr));
+			int sum = Integer.MIN_VALUE;
+			for (int j = 0; j < movesArrayList.size(); j++) {
+				ArrayList<Integer> arr1= new ArrayList<Integer>(moveArr(arr,player,movesArrayList.get(j)));
+				int tem = minValueAB(arr1,!player,i-1,A,B);
+				if(sum>tem) {
+					sum = tem;
+				}
+				if(sum>B) {
+					return sum;
+				}
+				A=Math.max(A, sum);
+				searchedNodeNumber++;
+			}
+			return sum;
+		}
+	}
 	private ArrayList<Integer> moveArr(ArrayList<Integer> board1, boolean player, Integer num) {
 		ArrayList<Integer> board= new ArrayList<Integer>(board1);
 		int numOfBall = board.get(num);

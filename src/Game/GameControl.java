@@ -29,8 +29,11 @@ public class GameControl {
 		board = new Board(Integer.parseInt(s[1]));
 		boardView = new BoardView(board);
 		player = true;
-		a1 = new AIStrategy1(player, board);
-		a2 = new AIStrategy2(player, board);
+		
+//		a1 = new AIStrategy1(player, board);
+//		a2 = new AIStrategy2(player, board);
+		a1 = new AIStrategy1(player, board,Integer.parseInt(s[2]));
+		a2 = new AIStrategy2(player, board,Integer.parseInt(s[2]));
 		if (s[0].equalsIgnoreCase("a1")) {
 			startA1();
 		}

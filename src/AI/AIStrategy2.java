@@ -22,6 +22,11 @@ public class AIStrategy2 {
 		this.board = board;
 		this.depth = 3;
 	}
+	public AIStrategy2(boolean player, Board board,int depth) {
+		this.player = player;
+		this.board = board;
+		this.depth = depth;
+	}
 
 	public int makeMove(boolean player) {
 		searchedNodeNumber = 0;
@@ -44,7 +49,51 @@ public class AIStrategy2 {
 
 		return position==-1?movesArrayList.get(0):position;
 	}
-	
+	private int minValueAB(ArrayList<Integer> arr, boolean player, int i,int A,int B) {
+		
+		if(i==0) {
+			searchedNodeNumber++;
+			return huristics(arr,this.player);
+		}else {
+			ArrayList<Integer> movesArrayList = new ArrayList<Integer>(getMoves(player, arr));
+			int sum = Integer.MIN_VALUE;
+			for (int j = 0; j < movesArrayList.size(); j++) {
+				ArrayList<Integer> arr1= new ArrayList<Integer>(moveArr(arr,player,movesArrayList.get(j)));
+				int tem = maxValueAB(arr1,!player,i-1,A,B);
+				if(sum<tem) {
+					sum = tem;
+				}
+				if(sum<B)
+					return sum;
+				B=Math.min(B, sum);
+				searchedNodeNumber++;
+			}
+			return sum;
+		}
+	}
+	private int maxValueAB(ArrayList<Integer> arr, boolean player, int i, int A, int B) {
+		
+		if(i==0) {
+			searchedNodeNumber++;
+			return huristics(arr,this.player);
+		}else {
+			ArrayList<Integer> movesArrayList = new ArrayList<Integer>(getMoves(player, arr));
+			int sum = Integer.MIN_VALUE;
+			for (int j = 0; j < movesArrayList.size(); j++) {
+				ArrayList<Integer> arr1= new ArrayList<Integer>(moveArr(arr,player,movesArrayList.get(j)));
+				int tem = minValueAB(arr1,!player,i-1,A,B);
+				if(sum>tem) {
+					sum = tem;
+				}
+				if(sum>B) {
+					return sum;
+				}
+				A=Math.max(A, sum);
+				searchedNodeNumber++;
+			}
+			return sum;
+		}
+	}
 	private int minValue(ArrayList<Integer> arr, boolean player, int i) {
 		
 		if(i==0) {
@@ -73,7 +122,7 @@ public class AIStrategy2 {
 			for (int j = 0; j < movesArrayList.size(); j++) {
 				ArrayList<Integer> arr1= new ArrayList<Integer>(moveArr(arr,player,movesArrayList.get(j)));
 				int tem = minValue(arr1,!player,i-1);
-				if(sum<tem) {
+				if(sum>tem) {
 					sum = tem;
 				}
 				searchedNodeNumber++;
