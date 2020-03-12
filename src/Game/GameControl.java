@@ -126,14 +126,14 @@ public class GameControl {
 				if (player) {
 					System.out.println("Hello " + playername + ", Please choose hole to move");
 					holenum = ran>=25?a1.makeMove(player):a2.makeMove(player);
-					System.out.println("AI Searched Nodes Number is : "+ (ran>=25?a1.getSearchedNodeNumber():a2.getSearchedNodeNumber()));
+					System.out.println("AI" + (ran>=25?"1":"2")+ " Searched Nodes Number is : "+ (ran>=25?a1.getSearchedNodeNumber():a2.getSearchedNodeNumber()));
 					System.out.println("AI"+ (ran>=25?"1":"2")+" move: " + holenum);
 					holeVality = true;
 				}
 				else {
 					System.out.println("Hello " + playername + ", Please choose hole to move");
 					holenum = ran>=25?a1.makeMove(player):a2.makeMove(player);
-					System.out.println("AI Searched Nodes Number is : "+ (ran>=25?a1.getSearchedNodeNumber():a2.getSearchedNodeNumber()));
+					System.out.println("AI "+(ran>=25?"1":"2")+" Searched Nodes Number is : "+ (ran>=25?a1.getSearchedNodeNumber():a2.getSearchedNodeNumber()));
 					System.out.println("AI"+ (ran>=25?"1":"2")+" move: " + holenum);
 					holeVality = true;
 				}
