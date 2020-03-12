@@ -8,7 +8,7 @@ public class AIStrategy1 {
 	private boolean player;
 	private Board board;
 	private int depth;
-
+	private int searchedNodeNumber = 0;
 	public AIStrategy1(boolean player, Board board) {
 		this.player = player;
 		this.board = board;
@@ -16,6 +16,7 @@ public class AIStrategy1 {
 	}
 
 	public int makeMove(boolean player) {
+		searchedNodeNumber = 0;
 		this.player = player;
 		ArrayList<Integer> movesArrayList = new ArrayList<Integer>(getMoves(player, board.getBoard()));
 		
@@ -28,16 +29,18 @@ public class AIStrategy1 {
 				sum = tem;
 				position = movesArrayList.get(i);
 			}
+			searchedNodeNumber++;
 		}
 
 		huristics(board.getBoard(), player);
 
-		return position;
+		return position==-1?movesArrayList.get(0):position;
 	}
 	
 	private int minValue(ArrayList<Integer> arr, boolean player, int i) {
 		
 		if(i==0) {
+			searchedNodeNumber++;
 			return huristics(arr,this.player);
 		}else {
 			ArrayList<Integer> movesArrayList = new ArrayList<Integer>(getMoves(player, arr));
@@ -48,13 +51,23 @@ public class AIStrategy1 {
 				if(sum<tem) {
 					sum = tem;
 				}
+				searchedNodeNumber++;
 			}
 			return sum;
 		}
 	}
+	public int getSearchedNodeNumber() {
+		return searchedNodeNumber;
+	}
+
+	public void setSearchedNodeNumber(int searchedNodeNumber) {
+		this.searchedNodeNumber = searchedNodeNumber;
+	}
+
 	private int maxValue(ArrayList<Integer> arr, boolean player, int i) {
 		
 		if(i==0) {
+			searchedNodeNumber++;
 			return huristics(arr,this.player);
 		}else {
 			ArrayList<Integer> movesArrayList = new ArrayList<Integer>(getMoves(player, arr));
@@ -65,6 +78,7 @@ public class AIStrategy1 {
 				if(sum<tem) {
 					sum = tem;
 				}
+				searchedNodeNumber++;
 			}
 			return sum;
 		}

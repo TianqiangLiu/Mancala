@@ -8,6 +8,14 @@ public class AIStrategy2 {
 	private boolean player;
 	private Board board;
 	private int depth;
+	private int searchedNodeNumber = 0;
+	public int getSearchedNodeNumber() {
+		return searchedNodeNumber;
+	}
+
+	public void setSearchedNodeNumber(int searchedNodeNumber) {
+		this.searchedNodeNumber = searchedNodeNumber;
+	}
 
 	public AIStrategy2(boolean player, Board board) {
 		this.player = player;
@@ -16,6 +24,7 @@ public class AIStrategy2 {
 	}
 
 	public int makeMove(boolean player) {
+		searchedNodeNumber = 0;
 		this.player = player;
 		ArrayList<Integer> movesArrayList = new ArrayList<Integer>(getMoves(player, board.getBoard()));
 		
@@ -28,11 +37,12 @@ public class AIStrategy2 {
 				sum = tem;
 				position = movesArrayList.get(i);
 			}
+			searchedNodeNumber++;
 		}
 
 		huristics(board.getBoard(), player);
 
-		return position;
+		return position==-1?movesArrayList.get(0):position;
 	}
 	
 	private int minValue(ArrayList<Integer> arr, boolean player, int i) {
@@ -48,6 +58,7 @@ public class AIStrategy2 {
 				if(sum<tem) {
 					sum = tem;
 				}
+				searchedNodeNumber++;
 			}
 			return sum;
 		}
@@ -65,6 +76,7 @@ public class AIStrategy2 {
 				if(sum<tem) {
 					sum = tem;
 				}
+				searchedNodeNumber++;
 			}
 			return sum;
 		}
@@ -160,22 +172,9 @@ public class AIStrategy2 {
 		ArrayList<Integer> arr = new ArrayList<Integer>(arrayList);
 		int sum = 0;
 		if (this.player) {
-			for (int i = 0; i < 3; i++) {
-				sum = sum + arr.get(i);
-			}
-			for (int i = 9; i < 15; i++) {
-				sum = sum + arr.get(i);
-			}
-			for (int i = 21; i < 24; i++) {
-				sum = sum + arr.get(i);
-			}
+			sum = sum + arr.get(0)+arr.get(12);
 		} else {
-			for (int i = 3; i < 9; i++) {
-				sum = sum + arr.get(i);
-			}
-			for (int i = 15; i < 21; i++) {
-				sum = sum + arr.get(i);
-			}
+			sum = sum + arr.get(6)+arr.get(18);
 		}
 		return sum;
 	}

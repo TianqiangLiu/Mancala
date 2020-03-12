@@ -185,5 +185,43 @@ public class Board {
 		}
 		return win;
 	}
+	public boolean winCheck() {
+		boolean win = true;
+		for (int i = 1; i < 3; i++) {
+			if (board.get(i) != 0) {
+				win = false;
+			}
+		}
+		for (int i = 9; i < 15; i++) {
+			if (board.get(i) != 0 && i != 12) {
+				win = false;
+			}
+		}
+		for (int i = 21; i < 24; i++) {
+			if (board.get(i) != 0) {
+				win = false;
+			}
+		}
+		if (win) {
+			System.out.println("Player one Wins !!!!!");
+			return win;
+		}
+		win = true;
+		for (int i = 3; i < 9; i++) {
+			if (board.get(i) != 0 && i != 6) {
+				win = false;
+			}
+		}
+		for (int i = 15; i < 21; i++) {
+			if (board.get(i) != 0 && i != 18) {
+				win = false;
+			}
+		}
+		if (win) {
+			System.out.println("Player two Wins !!!!!");
+			return win;
+		}
+		return win;
+	}
 
 }
